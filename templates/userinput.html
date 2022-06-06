@@ -235,7 +235,7 @@
 
 
         async function getApi() {
-            const jsonFormatData = await fetch('/home/ajay/Desktop/FYP/static/song.json');
+            const jsonFormatData = await fetch('/static/song.json');
             const jsFormatData = await jsonFormatData.json();
 
             document.getElementById("image").innerHTML = "<img src=" + jsFormatData.song_id_image[0].Track + " class=rounded mx-auto d-block>";
@@ -247,7 +247,7 @@
 
         }
         async function getnext() {
-            const jsonFormatData = await fetch('/home/ajay/Desktop/FYP/static/song.json');
+            const jsonFormatData = await fetch('/static/song.json');
             const jsFormatData = await jsonFormatData.json();
             document.getElementById("image").innerHTML = "<img src=" + jsFormatData.song_id_image[1 + j].Track + " class=rounded mx-auto d-block>";
             document.getElementById("text").innerHTML = jsFormatData.song_id_image[1 + j].Name;
@@ -256,7 +256,7 @@
             j = j + 1;
         }
         async function getprevious() {
-            const jsonFormatData = await fetch('/home/ajay/Desktop/FYP/static/song.json');
+            const jsonFormatData = await fetch('static/song.json');
             const jsFormatData = await jsonFormatData.json();
             document.getElementById("image").innerHTML = "<img src=" + jsFormatData.song_id_image[j].Track + " class=rounded mx-auto d-block>";
             document.getElementById("text").innerHTML = jsFormatData.song_id_image[j].Name;

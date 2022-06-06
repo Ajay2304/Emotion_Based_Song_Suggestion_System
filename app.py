@@ -1,4 +1,5 @@
 from pydoc import render_doc
+from unittest import result
 from django.shortcuts import render
 from flask import Flask, render_template, request, jsonify, Response
 import pymysql
@@ -74,7 +75,7 @@ import os, sys
 import numpy as np
 from threading import Thread
 
-app = Flask(__name__, static_url_path='/home/ajay/Desktop/FYP/static')
+app = Flask(__name__, static_url_path='/static')
 def sql_connector():
     conn = pymysql.connect(user='root', password='', db = 'DETAILS', host = 'localhost')
     c = conn.cursor()
@@ -159,7 +160,7 @@ def refresh():
     sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 
 
-    with open("/home/ajay/Desktop/FYP/static/song.json", "w+") as outfile:
+    with open("./static/song.json", "w+") as outfile:
                 json.dump("", outfile, indent = 4)
     data = pd.read_csv("Dataset.csv")
     x = data.iloc[:,3:14] 
@@ -612,14 +613,13 @@ def refresh():
 def userinputmap():
 
 
-    with open("/home/ajay/Desktop/FYP/static/song.json", "w+") as outfile:
+    with open("./static/song.json", "w+") as outfile:
                 json.dump("", outfile, indent = 4)
     model=load_model("imagerec.h5")
-    op={0: 'ANGRY', 3: 'HAPPY', 2: 'CALM', 1: 'SAD'}
+    op={0: 'ANGRY', 1: 'HAPPY', 2: 'CALM', 3: 'SAD'}
     path = "image.png"
     
-    img = load_img(path, target_size=(224,224) )
-    
+    img = load_img(path, target_size=(224,224))
     emo = " "
     i = img_to_array(img)/255
     input_arr = np.array([i])
@@ -628,12 +628,14 @@ def userinputmap():
     pred = np.argmax(model.predict(input_arr))
     if(pred == 0):
         emo = "ANGRY"
-    elif(pred == 3):
+    elif(pred == 1):
         emo = "HAPPY"
     elif(pred == 2):
         emo = "CALM"
-    elif(pred ==1):
+    elif(pred == 3):
         emo = "SAD"
+    
+    
     print(f" the person is {emo}")
     songs_json = {"song_id_image":[]}
     dataset = pd.read_csv('song_id.csv',encoding="utf-8")
@@ -671,7 +673,7 @@ def userinputmap():
                         else:
                             songs_json["song_id_image"].append(id)
                         id = {}
-            with open("/home/ajay/Desktop/FYP/static/song.json", "w+") as outfile:
+            with open("static/song.json", "w+") as outfile:
                 json.dump(songs_json, outfile, indent = 4)
 
         elif userinput == 'HAPPY':
@@ -698,7 +700,7 @@ def userinputmap():
                         else:
                             songs_json["song_id_image"].append(id)
                         id = {}
-            with open("/home/ajay/Desktop/FYP/static/song.json", "w+") as outfile:
+            with open("static/song.json", "w+") as outfile:
                 json.dump(songs_json, outfile, indent = 4)
 
         
@@ -725,7 +727,7 @@ def userinputmap():
                         else:
                             songs_json["song_id_image"].append(id)
                         id = {}
-            with open("/home/ajay/Desktop/FYP/static/song.json", "w+") as outfile:
+            with open("static/song.json", "w+") as outfile:
                 json.dump(songs_json, outfile, indent = 4)
             
 
@@ -752,7 +754,7 @@ def userinputmap():
                         else:
                             songs_json["song_id_image"].append(id)
                         id = {}
-            with open("/home/ajay/Desktop/FYP/static/song.json", "w+") as outfile:
+            with open("static/song.json", "w+") as outfile:
                 json.dump(songs_json, outfile, indent = 4)
         emotion+=op[pred]
     
